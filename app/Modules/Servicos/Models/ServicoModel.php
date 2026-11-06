@@ -31,6 +31,7 @@ class ServicoModel extends Model
         'duracao_minutos',
         'preco',
         'status',
+        'trinks_servico_id',
     ];
 
     protected function casts(): array

@@ -35,6 +35,7 @@ class AssistenteModel extends Model
         'hora_checkin',
         'status_operacional',
         'status',
+        'trinks_profissional_id',
     ];
 
     protected function casts(): array

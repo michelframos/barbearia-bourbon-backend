@@ -1,9 +1,12 @@
 <?php
 
 use App\Modules\Agendamentos\Http\Controllers\AgendamentoController;
+use App\Modules\Trinks\Http\Controllers\TrinksAgendamentoController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum', 'empresa'])->prefix('agendamentos')->group(function () {
+    Route::post('/trinks/importar', [TrinksAgendamentoController::class, 'importar']);
+    Route::post('/trinks/exportar', [TrinksAgendamentoController::class, 'exportar']);
     Route::get('/', [AgendamentoController::class, 'index']);
     Route::get('/grade', [AgendamentoController::class, 'grade']);
     Route::post('/', [AgendamentoController::class, 'store']);

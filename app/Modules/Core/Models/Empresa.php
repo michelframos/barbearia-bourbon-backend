@@ -49,6 +49,13 @@ class Empresa extends Model
         'momento_atribuicao_assistente',
         'cursor_sequencial_data',
         'status',
+        'trinks_ativo',
+        'trinks_estabelecimento_id',
+        'trinks_api_key',
+    ];
+
+    protected $hidden = [
+        'trinks_api_key',
     ];
 
     protected function casts(): array
@@ -62,6 +69,15 @@ class Empresa extends Model
             'max_atendimentos_simultaneos_assistente' => 'integer',
             'ultima_assistente_sequencial_id' => 'integer',
             'cursor_sequencial_data' => 'date',
+            'trinks_ativo' => 'boolean',
+            'trinks_api_key' => 'encrypted',
         ];
+    }
+
+    public function integracaoTrinksPronta(): bool
+    {
+        return (bool) $this->trinks_ativo
+            && filled($this->trinks_estabelecimento_id)
+            && filled($this->trinks_api_key);
     }
 }

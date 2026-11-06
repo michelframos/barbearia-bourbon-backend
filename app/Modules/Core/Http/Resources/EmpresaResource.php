@@ -33,6 +33,10 @@ class EmpresaResource extends JsonResource
             'momento_atribuicao_assistente' => $this->momento_atribuicao_assistente,
             'cursor_sequencial_data' => $this->cursor_sequencial_data?->format('Y-m-d'),
             'status' => $this->status,
+            'trinks_ativo' => (bool) $this->trinks_ativo,
+            'trinks_estabelecimento_id' => $this->trinks_estabelecimento_id,
+            'trinks_api_key_definida' => filled($this->trinks_api_key),
+            'trinks_webhook_url' => url('/api/webhooks/trinks'),
         ];
     }
 }

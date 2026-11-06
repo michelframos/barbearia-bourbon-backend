@@ -19,6 +19,10 @@ class UpdateEmpresaUseCase
      */
     public function execute(array $data): Empresa
     {
+        if (array_key_exists('trinks_api_key', $data) && ! filled($data['trinks_api_key'])) {
+            unset($data['trinks_api_key']);
+        }
+
         $empresa = $this->empresaConfig->getEmpresa();
         $empresa->update($data);
         $fresh = $empresa->fresh();

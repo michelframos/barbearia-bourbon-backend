@@ -5,11 +5,13 @@ namespace App\Modules\Agendamentos\UseCases;
 use App\Modules\Agendamentos\Contracts\AgendamentoRepositoryInterface;
 use App\Modules\Agendamentos\DTOs\AgendamentoDTO;
 use App\Modules\Agendamentos\Models\AgendamentoModel;
+use App\Modules\Trinks\UseCases\EnviarAgendamentoParaTrinksUseCase;
 
 class DeleteAgendamentoUseCase
 {
     public function __construct(
-        private readonly AgendamentoRepositoryInterface $repository
+        private readonly AgendamentoRepositoryInterface $repository,
+        private readonly EnviarAgendamentoParaTrinksUseCase $enviarTrinks,
     ) {}
 
     public function execute(int $idEmpresa, string|int $id): void
@@ -24,5 +26,6 @@ class DeleteAgendamentoUseCase
         }
 
         $this->repository->delete($model);
+        $this->enviarTrinks->execute($model, EnviarAgendamentoParaTrinksUseCase::ACAO_CANCELAR);
     }
 }

@@ -4,12 +4,14 @@ namespace App\Modules\Agendamentos\UseCases;
 
 use App\Modules\Agendamentos\Contracts\AgendamentoRepositoryInterface;
 use App\Modules\Agendamentos\Models\AgendamentoModel;
+use App\Modules\Trinks\UseCases\EnviarAgendamentoParaTrinksUseCase;
 use Illuminate\Validation\ValidationException;
 
 class CancelAgendamentoUseCase
 {
     public function __construct(
         private readonly AgendamentoRepositoryInterface $repository,
+        private readonly EnviarAgendamentoParaTrinksUseCase $enviarTrinks,
     ) {}
 
     public function execute(int $idEmpresa, string|int $id): AgendamentoModel
@@ -36,6 +38,7 @@ class CancelAgendamentoUseCase
         ]));
 
         $this->repository->delete($updated);
+        $this->enviarTrinks->execute($updated, EnviarAgendamentoParaTrinksUseCase::ACAO_CANCELAR);
 
         return $updated;
     }

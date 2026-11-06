@@ -16,6 +16,7 @@ use App\Modules\Core\Services\AuditLogService;
 use App\Modules\Core\Services\EmpresaConfigService;
 use App\Modules\Core\Support\AuditAcao;
 use App\Modules\Servicos\Models\ServicoModel;
+use App\Modules\Trinks\UseCases\EnviarAgendamentoParaTrinksUseCase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -28,6 +29,7 @@ class CheckInAtendimentoUseCase
         private readonly EmpresaConfigService $empresaConfig,
         private readonly AuditLogService $auditLog,
         private readonly NotificadorInterface $notificador,
+        private readonly EnviarAgendamentoParaTrinksUseCase $enviarTrinks,
     ) {}
 
     public function execute(AtendimentoDTO $dto): AtendimentoModel
@@ -98,7 +100,7 @@ class CheckInAtendimentoUseCase
             $data['posicao_fila'] = null;
         }
 
-        return DB::transaction(function () use ($data, $idEmpresa) {
+        $atendimento = DB::transaction(function () use ($data, $idEmpresa) {
             $atendimento = $this->repository->create(AtendimentoDTO::fromRequest($data));
 
             if ($atendimento->id_agendamento) {
@@ -147,6 +149,22 @@ class CheckInAtendimentoUseCase
 
             return $atendimento;
         });
+
+        if ($atendimento->id_agendamento) {
+            $agendamento = AgendamentoModel::query()
+                ->where('id_empresa', $idEmpresa)
+                ->where('id', $atendimento->id_agendamento)
+                ->first();
+
+            if ($agendamento) {
+                $this->enviarTrinks->execute(
+                    $agendamento,
+                    EnviarAgendamentoParaTrinksUseCase::ACAO_CONFIRMAR,
+                );
+            }
+        }
+
+        return $atendimento;
     }
 
     /**

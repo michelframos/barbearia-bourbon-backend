@@ -11,6 +11,7 @@ use App\Modules\Barbeiros\Models\BarbeiroModel;
 use App\Modules\Clientes\Models\ClienteModel;
 use App\Modules\Core\Models\Empresa;
 use App\Modules\Servicos\Models\ServicoModel;
+use App\Modules\Trinks\UseCases\EnviarAgendamentoParaTrinksUseCase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -19,6 +20,7 @@ class UpdateAgendamentoUseCase
     public function __construct(
         private readonly AgendamentoRepositoryInterface $repository,
         private readonly DisponibilidadeSlotStrategyInterface $slotStrategy,
+        private readonly EnviarAgendamentoParaTrinksUseCase $enviarTrinks,
     ) {}
 
     public function execute(AgendamentoModel $model, AgendamentoDTO $dto): AgendamentoModel
@@ -74,7 +76,13 @@ class UpdateAgendamentoUseCase
             );
         }
 
-        return $this->repository->update($model, AgendamentoDTO::fromRequest($data));
+        $updated = $this->repository->update($model, AgendamentoDTO::fromRequest($data));
+        $acao = $updated->status_agenda === AgendamentoModel::STATUS_CANCELADO
+            ? EnviarAgendamentoParaTrinksUseCase::ACAO_CANCELAR
+            : EnviarAgendamentoParaTrinksUseCase::ACAO_SALVAR;
+        $this->enviarTrinks->execute($updated, $acao);
+
+        return $updated;
     }
 
     /**

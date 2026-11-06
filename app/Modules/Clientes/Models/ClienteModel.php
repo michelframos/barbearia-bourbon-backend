@@ -34,6 +34,7 @@ class ClienteModel extends Model
         'id_assistente_preferida',
         'observacoes',
         'status',
+        'trinks_cliente_id',
     ];
 
     public function assistentePreferida(): BelongsTo

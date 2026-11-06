@@ -11,6 +11,7 @@ use App\Modules\Barbeiros\Models\BarbeiroModel;
 use App\Modules\Clientes\Models\ClienteModel;
 use App\Modules\Core\Models\Empresa;
 use App\Modules\Servicos\Models\ServicoModel;
+use App\Modules\Trinks\UseCases\EnviarAgendamentoParaTrinksUseCase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -19,6 +20,7 @@ class CreateAgendamentoUseCase
     public function __construct(
         private readonly AgendamentoRepositoryInterface $repository,
         private readonly DisponibilidadeSlotStrategyInterface $slotStrategy,
+        private readonly EnviarAgendamentoParaTrinksUseCase $enviarTrinks,
     ) {}
 
     public function execute(AgendamentoDTO $dto): AgendamentoModel
@@ -48,7 +50,10 @@ class CreateAgendamentoUseCase
             );
         }
 
-        return $this->repository->create(AgendamentoDTO::fromRequest($data));
+        $model = $this->repository->create(AgendamentoDTO::fromRequest($data));
+        $this->enviarTrinks->execute($model);
+
+        return $this->repository->findById($idEmpresa, $model->id);
     }
 
     /**

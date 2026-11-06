@@ -60,12 +60,17 @@ class AgendamentoModel extends Model
         'observacoes',
         'status_agenda',
         'status',
+        'trinks_agendamento_id',
+        'trinks_sync_erro',
+        'trinks_sincronizado_em',
     ];
 
     protected function casts(): array
     {
         return [
             'data' => 'date',
+            'trinks_agendamento_id' => 'integer',
+            'trinks_sincronizado_em' => 'datetime',
         ];
     }
 

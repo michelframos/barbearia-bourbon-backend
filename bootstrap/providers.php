@@ -15,4 +15,5 @@ return [
     App\Modules\Assistentes\Providers\AssistenteServiceProvider::class,
     App\Modules\Servicos\Providers\ServicoServiceProvider::class,
     App\Modules\Dashboard\Providers\DashboardServiceProvider::class,
+    App\Modules\Trinks\Providers\TrinksServiceProvider::class,
 ];

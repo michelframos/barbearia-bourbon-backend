@@ -35,6 +35,7 @@ class BarbeiroModel extends Model
         'status_operacional',
         'hora_entrada',
         'status',
+        'trinks_profissional_id',
     ];
 
     /**
