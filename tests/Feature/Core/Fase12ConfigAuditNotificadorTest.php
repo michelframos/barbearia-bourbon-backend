@@ -25,7 +25,7 @@ class Fase12ConfigAuditNotificadorTest extends TestCase
         parent::setUp();
 
         $this->seed(DatabaseSeeder::class);
-        $this->user = User::query()->where('email', 'admin@barbearia.test')->firstOrFail();
+        $this->user = User::query()->where('email', 'admin@email.com')->firstOrFail();
         Sanctum::actingAs($this->user);
     }
 

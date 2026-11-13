@@ -31,7 +31,7 @@ class SelecaoAssistenteSequencialTest extends TestCase
         $this->seed(DatabaseSeeder::class);
 
         $this->idEmpresa = EmpresaContext::id();
-        $this->user = User::query()->where('email', 'admin@barbearia.test')->firstOrFail();
+        $this->user = User::query()->where('email', 'admin@email.com')->firstOrFail();
 
         Sanctum::actingAs($this->user);
     }

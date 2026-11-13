@@ -26,7 +26,7 @@ class IntegracaoTrinksTest extends TestCase
         parent::setUp();
 
         $this->seed(DatabaseSeeder::class);
-        Sanctum::actingAs(User::query()->where('email', 'admin@barbearia.test')->firstOrFail());
+        Sanctum::actingAs(User::query()->where('email', 'admin@email.com')->firstOrFail());
     }
 
     public function test_ativar_trinks_exige_chave_e_estabelecimento_e_nao_devolve_a_chave(): void

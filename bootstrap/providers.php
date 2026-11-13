@@ -16,4 +16,5 @@ return [
     App\Modules\Servicos\Providers\ServicoServiceProvider::class,
     App\Modules\Dashboard\Providers\DashboardServiceProvider::class,
     App\Modules\Trinks\Providers\TrinksServiceProvider::class,
+    App\Modules\Usuarios\Providers\UsuariosServiceProvider::class,
 ];

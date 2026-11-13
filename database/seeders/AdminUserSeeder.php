@@ -5,18 +5,21 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Modules\Core\Support\EmpresaContext;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
+        User::query()
+            ->where('email', 'admin@barbearia.test')
+            ->update(['email' => 'admin@email.com']);
+
         User::query()->updateOrCreate(
-            ['email' => 'admin@barbearia.test'],
+            ['email' => 'admin@email.com'],
             [
                 'id_empresa' => EmpresaContext::id(),
                 'name' => 'Administrador',
-                'password' => Hash::make('password'),
+                'password' => 'Mudar@123',
                 'perfil' => 'admin',
                 'id_assistente' => null,
                 'id_barbeiro' => null,
